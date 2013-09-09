@@ -223,14 +223,80 @@ In order to show this working the `app/index.html` file has been updated with in
 Tip: Try removing the `true` from the watch function above and see what happens. Why does this happen? To learn more read about the [objectEquality][4] parameter of the $watch function.
 
 
-Pass data and text (object-key names)
---------------------------------------
- - pass key-name as text
-  - allows different object layouts to work
- - example showing both percent and currency in bar chart
+Basic with Data and Key Names as Attributes
+-------------------------------------------
+Git Branch: `basic-scope`
 
-Pass data, object-key names, and passback on-click
----------------------------------------------------
+Let say we want to add text labels to the data we are now showing.  If you look carefully at the d3Data objects in the two controllers they do not have the same key names.  `DemoCtrl` uses `name` while `DemoCtrl2` uses `title`.  If we add the labels to the d3 code we have to specify the key name as shown here:
+
+File: `app/scripts/directives/d3Basic.js`
+```
+svg.selectAll("text")
+  .data(data)
+  .enter()
+    .append("text")
+    .attr("fill", "#fff")
+    .attr("y", function(d, i){return i * 35 + 22;})
+    .attr("x", 15)
+    .text(function(d){return d.name;});
+```
+
+This will only show the labels on `DemoCtrl` and not `DemoCtrl2`.  If we want to be able to display both of them, we could pass the key in as an attribute string.
+
+File: `app/scripts/directives/d3Basic.js`
+```
+restrict: 'EA',
+scope: {
+  data: "=",
+  label: "@"
+},
+link: function(scope, iElement, iAttrs) {
+```
+```
+.text(function(d){return d[scope.label];});
+```
+File: `app/index.html`
+```
+<d3-bars data="d3Data" label="name"></d3-bars>
+
+<d3-bars data="d3Data" label="title"></d3-bars>
+```
+
+Take the label attributes out, and change line `75` to say
+```
+.text(function(d){return d.name;});
+```
+This could also have been done using a controller scope variable instead of a string if you wanted.  That would be a quick change like shown below (this is not in the git repo):
+
+File: `app/scripts/directives/d3Basic.js`
+```
+restrict: 'EA',
+scope: {
+  data: "=",
+  label: "="
+},
+link: function(scope, iElement, iAttrs) {
+```
+File: `app/index.html`
+```
+<d3-bars data="d3Data" label="d3Label"></d3-bars>
+
+<d3-bars data="d3Data" label="d3Label"></d3-bars>
+```
+File: `app/scripts/controllers/demoCtrl.js`
+```
+$scope.d3Label = "name"
+```
+
+File: `app/scripts/controllers/demoCtrl2.js`
+```
+$scope.d3Label = "title"
+```
+
+Basic with Click Events
+-----------------------
+
+
  - click events passed back to controller
  - show mouse events also
  - example showing donut bar chart click events

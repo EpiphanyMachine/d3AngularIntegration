@@ -6,7 +6,8 @@
       return {
         restrict: 'EA',
         scope: {
-          data: "="
+          data: "=",
+          label: "@"
         },
         link: function(scope, iElement, iAttrs) {
           var svg = d3.select(iElement[0])
@@ -63,6 +64,16 @@
                   .attr("width", function(d){
                     return d.score/(max/width);
                   }); // width based on scale
+
+            svg.selectAll("text")
+              .data(data)
+              .enter()
+                .append("text")
+                .attr("fill", "#fff")
+                .attr("y", function(d, i){return i * 35 + 22;})
+                .attr("x", 15)
+                .text(function(d){return d[scope.label];});
+
           };
         }
       };
