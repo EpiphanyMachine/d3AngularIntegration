@@ -1,0 +1,26 @@
+<!doctype html>
+  <head>
+    <meta charset="utf-8">
+    <title>d3 and Angular</title>
+    <meta name="description" content="d3 and Angular">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+  </head>
+  <body class="row" ng-app="myApp">
+    <div class="col-md-6 col-md-offset-3" ng-controller="DemoCtrl">
+      {{greeting}}
+      <d3-bars></d3-bars>
+    </div>
+
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js"></script>
+    <script src="scripts/app.js"></script>
+    <script src="scripts/services/d3.js"></script>
+    <script src="scripts/controllers/demoCtrl.js"></script>
+
+<!-- Choose a line basec on the step of the tutorial you are on -->
+
+    <script src="scripts/directives/d3Basic.js"></script>
+    <!-- <script src="scripts/directives/d3Basic.js"></script> -->
+
+
+  </body>
+</html>
