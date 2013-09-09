@@ -5,17 +5,13 @@
     .directive('d3Bars', ['d3', function(d3) {
       return {
         restrict: 'EA',
-        scope: {},
+        scope: {
+          data: "="
+        },
         link: function(scope, iElement, iAttrs) {
           var svg = d3.select(iElement[0])
               .append("svg")
               .attr("width", "100%");
-          // dummy data
-          scope.data = [
-            {name: "Greg", score:98},
-            {name: "Ari", score:96},
-            {name: "Loser", score: 48}
-          ];
 
           // on window resize, re-render d3 canvas
           window.onresize = function() {
@@ -27,6 +23,11 @@
               return scope.render(scope.data);
             }
           );
+
+          // watch for data changes and re-render
+          scope.$watch('data', function(newVals, oldVals) {
+            return scope.render(newVals);
+          }, true);
 
           // define render function
           scope.render = function(data){

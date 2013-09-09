@@ -3,8 +3,12 @@
 
   angular.module('myApp.controllers')
     .controller('DemoCtrl', ['$scope', function($scope){
-      $scope.greeting = "Resize the page to see the re-rendering!";
-      //controller code here
+      $scope.title = "DemoCtrl";
+      $scope.d3Data = [
+        {name: "Greg", score:98},
+        {name: "Ari", score:96},
+        {name: "Loser", score: 48}
+      ];
     }]);
 
 }());
