@@ -1,14 +1,15 @@
 Integrating d3 and Angular
 ==========================
+There is a [github repo][1] with code to accompany this post.  Contributions are encouraged!
 
 What is d3
 ----------
-[D3][1] stands for Data-Driven Documents, and is described by the authors as follows:
+[D3][2] stands for Data-Driven Documents, and is described by the authors as follows:
 > "D3.js is a JavaScript library for manipulating documents based on data. D3 helps you bring data to life using HTML, SVG and CSS. D3’s emphasis on web standards gives you the full capabilities of modern browsers without tying yourself to a proprietary framework, combining powerful visualization components and a data-driven approach to DOM manipulation."
 
 What is an Angular Directive
 ----------------------------
-An Angular Directive is a way to extend the functionality of HTML.  This can be done multiple ways, but the most useful for our purposes now is restricting the directive to an element tag.  For more information see the post about how to [Build custom directives with AngularJS][2]
+An Angular Directive is a way to extend the functionality of HTML.  This can be done multiple ways, but the most useful for our purposes now is restricting the directive to an element tag.  For more information see the post about how to [Build custom directives with AngularJS][3]
 
 
 How to make d3 work with dependency injection
@@ -58,7 +59,7 @@ This is advantageous when you want to make an your d3 responsive based on differ
 
 In order to do this we need to divide our d3 code into two sections.  First all the code that will not change on a render such as the parent element, watcher functions and helper functions.  Second will be all the code that will change during a render such as height, width, data and scale.
 
-You will now create a simple bar chart with hard encoded data.  We will explore different data sources in future sections. 
+You will now create a simple bar chart with hard encoded data.  We will explore different data sources in future sections.
 
 Let's start by creating the file.  This assumes you are using d3 as a dependency (recommended). Create the following file:
 
@@ -86,7 +87,7 @@ angular.module('appApp.directives')
   }]);
 ```
 
-We need to set up our directive to use the d3 code we provide.  We will be using restrict and link properties for our basic bar chart. Lets add the link function now; it will store our d3 code.  To learn more about the link property or its parameters [read here][3].
+We need to set up our directive to use the d3 code we provide.  We will be using restrict and link properties for our basic bar chart. Lets add the link function now; it will store our d3 code.  To learn more about the link property or its parameters [read here][4].
 
 File: `app/scripts/directives/d3Bars.js`
 ```
@@ -220,12 +221,12 @@ scope.$watch('data', function(newVals, oldVals) {
 
 In order to show this working the `app/index.html` file has been updated with inputs to modify the d3Data object.  It also uses the same directive from two different controllers.  Go experiment with it!
 
-Tip: Try removing the `true` from the watch function above and see what happens. Why does this happen? To learn more read about the [objectEquality][4] parameter of the $watch function.
+Tip: Try removing the `true` from the watch function above and see what happens. Why does this happen? To learn more read about the [objectEquality][5] parameter of the $watch function.
 
 
 Basic with Data and Key Names as Attributes
 -------------------------------------------
-Git Branch: `basic-scope`
+Git Branch: `basic-labels`
 
 Let say we want to add text labels to the data we are now showing.  If you look carefully at the d3Data objects in the two controllers they do not have the same key names.  `DemoCtrl` uses `name` while `DemoCtrl2` uses `title`.  If we add the labels to the d3 code we have to specify the key name as shown here:
 
@@ -295,15 +296,52 @@ $scope.d3Label = "title"
 
 Basic with Click Events
 -----------------------
+Git Branch: `basic-click`
+
+Now we have data being watched and drawn based on screen width and scope variables.  Let's add some click events that trigger a function on the controller.  This can be done by adding a function name as an attribute.
+
+In order to pass data through to the scope function an object with the key `item` has to be used. `scope.onClick({item: [stuff to pass here]})`
+
+First we need to create the function on the controller scope.
+File: `app/scripts/controllers/demoCtrl.js`
+```
+$scope.d3OnClick = function(item){
+  alert(item.name);
+};
+```
+Then we need to add the attribute to the HTML
+File: `app/index.html`
+```
+<d3-bars data="d3Data" label="d3Label" on-click="d3OnClick(item)"></d3-bars>
+```
+Finally we need to add the attribute and click event in the directive
+
+File: `app/scripts/directives/d3Basic.js`
+```
+restrict: 'EA',
+scope: {
+  data: "=",
+  label: "@",
+  onClick: "&"
+},
+link: function(scope, iElement, iAttrs) {
+```
+```
+// goes after line 56 .append("rect")
+.on("click", function(d, i){return scope.onClick({item: d});})
+```
+
+Tip: try to get this working with `DemoCtrl2`!
+
+Moar!
+-----
+There are way more interesting ways to integrate d3 and Angular together.  If you have any fixes or additions please fork the repo and submit them!  I hope you learned something, let me know your feedback in the comments below.
+
+If you create a section please make a branch with your additions and specify the branch as I have done in the README.  Thanks!
 
 
- - click events passed back to controller
- - show mouse events also
- - example showing donut bar chart click events
- - easily integrate with controller data such as opening modals
-
-
-  [1]: http://d3js.org/
-  [2]: http://www.ng-newsletter.com/posts/directives.html
+  [1]: https://github.com/EpiphanyMachine/d3AngularIntegration
+  [2]: http://d3js.org/
   [3]: http://www.ng-newsletter.com/posts/directives.html
-  [4]: http://docs.angularjs.org/api/ng.$rootScope.Scope#$watch
+  [4]: http://www.ng-newsletter.com/posts/directives.html
+  [5]: http://docs.angularjs.org/api/ng.$rootScope.Scope#$watch

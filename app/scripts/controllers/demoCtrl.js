@@ -9,6 +9,9 @@
         {name: "Ari", score:96},
         {name: "Loser", score: 48}
       ];
+      $scope.d3OnClick = function(item){
+        alert(item.name);
+      };
     }]);
 
 }());

@@ -15,7 +15,7 @@
     <div class="row">
       <div class="col-md-6 col-md-offset-3" ng-controller="DemoCtrl">
         <span>{{title}}</span>
-        <d3-bars data="d3Data" label="name"></d3-bars>
+        <d3-bars data="d3Data" label="name" on-click="d3OnClick(item)"></d3-bars>
         <br>
         <br>
         <span>First Item</span>
