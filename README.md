@@ -59,7 +59,7 @@ This is advantageous when you want to make an your d3 responsive based on differ
 
 In order to do this we need to divide our d3 code into two sections.  First all the code that will not change on a render such as the parent element, watcher functions and helper functions.  Second will be all the code that will change during a render such as height, width, data and scale.
 
-You will now create a simple bar chart with hard encoded data.  We will explore different data sources in future sections.
+You will now create a simple bar chart with hard encoded data.  We will explore different data sources in future sections. 
 
 Let's start by creating the file.  This assumes you are using d3 as a dependency (recommended). Create the following file:
 
