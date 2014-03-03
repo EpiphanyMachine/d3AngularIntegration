@@ -339,9 +339,12 @@ There are way more interesting ways to integrate d3 and Angular together.  If yo
 
 If you create a section please make a branch with your additions and specify the branch as I have done in the README.  Thanks!
 
+This and many other great sources of information are thanks to my time and connections I made at [HackReactor][6]
+
 
   [1]: https://github.com/EpiphanyMachine/d3AngularIntegration
   [2]: http://d3js.org/
   [3]: http://www.ng-newsletter.com/posts/directives.html
   [4]: http://www.ng-newsletter.com/posts/directives.html
   [5]: http://docs.angularjs.org/api/ng.$rootScope.Scope#$watch
+  [6]: http://www.hackreactor.com
